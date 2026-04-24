@@ -173,12 +173,12 @@ if __name__ == "__main__":
         next_obs, rewards, terminations, truncations, infos = envs.step(actions)
 
         # TRY NOT TO MODIFY: record rewards for plotting purposes
-        if "final_info" in infos:
-            for info in infos["final_info"]:
-                if info and "episode" in info:
-                    print(f"global_step={global_step}, episodic_return={info['episode']['r']}")
-                    writer.add_scalar("charts/episodic_return", info["episode"]["r"], global_step)
-                    writer.add_scalar("charts/episodic_length", info["episode"]["l"], global_step)
+        if "episode" in infos:
+            info = infos["episode"]
+            if info and "r" in info and "l" in info:
+                print(f"global_step={global_step}, episodic_return={info['r'][0]}", flush=True)
+                writer.add_scalar("charts/episodic_return", info["r"][0], global_step)
+                writer.add_scalar("charts/episodic_length", info["l"][0], global_step)
 
         # TRY NOT TO MODIFY: save data to reply buffer; handle `final_observation`
         real_next_obs = next_obs.copy()
